@@ -9,51 +9,82 @@
 #include "TSystem.h"
 #include "TROOT.h"
 
-
 #include "TMVA/Tools.h"
 #include "TMVA/Factory.h"
 #include "TMVA/DataLoader.h"
 #include "TMVA/TMVAMultiClassGui.h"
 
 using namespace TMVA;
-void MNISTTMVA(  )
+
+void MNISTTMVA()
 {
-   // Load MNIST dataset ROOT file
-   TString datafilename = "./data/MNIST.root";
-   TFile* data = TFile::Open( datafilename, "READ" );
+	// Load MNIST dataset ROOT file
+	TString datafilename = "./data/MNIST.root";
+	TFile* data = TFile::Open(datafilename, "READ");
 
-   // Setup TMVA
-   // This loads the library
-   TMVA::Tools::Instance();
-   TString outfileName = "./data/MNISTTMVA.root";
-   TFile* output = TFile::Open( outfileName, "RECREATE" );
-   TMVA::Factory *factory = new TMVA::Factory( "TMVAMulticlass", output,
-                                               "!V:Color:DrawProgressBar:"
-                                               "!Silent:"
-                                               "Transformations=:"
-                                               "AnalysisType=multiclass" );
+	// Setup TMVA
+	// This loads the library
+	TMVA::Tools::Instance();
+	TString outfileName = "./data/MNISTTMVA.root";
+	TFile* output = TFile::Open(outfileName, "RECREATE");
+	TMVA::Factory* factory = new TMVA::Factory("TMVAMulticlass", output,
+		"!V:Color:DrawProgressBar:"
+		"!Silent:"
+		"Transformations=:"
+		"AnalysisType=multiclass");
 
-   // Load data trees and variables
-   Int_t nb_classes = 10;
-   Int_t pixel = 28*28;
-   Float_t weight = 1.0;
-   TCut cut = "";
-   TTree* traintree[10], testtree[10];
-   Char_t trainname[10], testname[10], branchname[10];
+	// Load data trees and variables
+	Int_t nb_classes = 10;
+	Int_t pixel = 28 * 28;
+	Float_t weight = 1.0;
+	TCut cut = "";
+	TTree* traintree[10], testtree[10];
+	Char_t trainname[10], testname[10], branchname[10], classname[10];
 
-   for( Int_t i = 0; i < nb_classes; i++ )
-   {
-      sprintf( trainname, "train%d", i );
-      traintree[i] = ( TTree* ) data->Get( trainname );
-      sprintf( testname , "test%d" , i );
-      testtree[i]  = ( TTree* ) data->Get( testname  );
-   }
+	for (Int_t i = 0; i < nb_classes; i++)
+	{
+		sprintf(trainname, "train%d", i);
+		traintree[i] = (TTree*)data->Get(trainname);
+		sprintf(testname, "test%d", i);
+		testtree[i] = (TTree*)data->Get(testname);
+	}
 
-   TMVA::DataLoader *dataloader=new TMVA::DataLoader("dataset");
-   for( Int_t i = 0; i < pixel; i++ )
-   {
-      sprintf( branchname, "image%d", i );
-      dataloader->AddVariable( branchname, 'F' );
-   }
+	TMVA::DataLoader* dataloader = new TMVA::DataLoader("dataset");
+	for (Int_t i = 0; i < pixel; i++)
+	{
+		sprintf(branchname, "image%d", i);
+		dataloader->AddVariable(branchname, 'F');
+	}
 
+	for (Int_t i = 0; i < nb_classes; i++)
+	{
+		sprintf(classname, "%d", i);
+		dataloader->AddTree(traintree[i], classname, weight, cut, TMVA::Types::kTraining);
+		dataloader->AddTree(testtree[i], classname, weight, cut, TMVA::Types::kTesting);
+	}
+
+	dataloader.PrepareTrainingAndTestTree(cut,
+		"!CalcCorrelations:"
+		"NormMode=:"
+		"!V");
+
+	TString layoutString("Layout=RELU|512,RELU|512,SOFTMAX");
+	TString training("BatchSize=128, Repetitions=5, DropConfig=0.2+0.2+0");
+	TString trainingStrategyString("TrainingStrategy=");
+	trainingStrategyString += training;
+	TString nnOptions("!H:!V:ErrorStrategy=CROSSENTROPY:VarTransform=");
+	nnOptions.Append(":");
+	nnOptions.Append(layoutString);
+	nnOptions.Append(":");
+	nnOptions.Append(trainingStrategyString);
+	factory->BookMethod(dataloader, TMVA::Types::kDNN, "MNISTTMVA", nnOptions);
+
+	factory->TrainAllMethods();
+	factory->TestAllMethods();
+	factory->EvaluateAllMethods();
+
+	output->Close();
+
+	delete factory;
+	delete dataloader;
 }

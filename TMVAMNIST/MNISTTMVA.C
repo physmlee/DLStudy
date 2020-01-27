@@ -38,7 +38,7 @@ void MNISTTMVA()
 	Int_t pixel = 28 * 28;
 	Float_t weight = 1.0;
 	TCut cut = "";
-	TTree* traintree[10], testtree[10];
+	TTree *traintree[10], *testtree[10];
 	Char_t trainname[10], testname[10], branchname[10], classname[10];
 
 	for (Int_t i = 0; i < nb_classes; i++)
@@ -63,9 +63,9 @@ void MNISTTMVA()
 		dataloader->AddTree(testtree[i], classname, weight, cut, TMVA::Types::kTesting);
 	}
 
-	dataloader.PrepareTrainingAndTestTree(cut,
+	dataloader->PrepareTrainingAndTestTree(cut,
 		"!CalcCorrelations:"
-		"NormMode=:"
+		"NormMode=None:"
 		"!V");
 
 	TString layoutString("Layout=RELU|512,RELU|512,SOFTMAX");
@@ -88,3 +88,4 @@ void MNISTTMVA()
 	delete factory;
 	delete dataloader;
 }
+

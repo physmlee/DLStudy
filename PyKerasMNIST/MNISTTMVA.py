@@ -57,21 +57,21 @@ from keras.utils import np_utils
 
 # Load MNIST dataset ROOT file
 datafilename = './data/MNIST.root'
-if not isfile( datafilename ):
+if not isfile( datafilename ): # If there is no dataset root file...
     print( '  ' + datafilename + ' file was not found.' )
     print( '  ' + 'You should run MNISTtoROOT.py first.' )
     print( '  ' + 'Trying to run MNISTtoROOT.py...' )
 
     if isfile( 'MNISTtoROOT.py' ):
-        print( '  ' + 'Running MNISTtoROOT.py' )
+        print( '  ' + 'Running MNISTtoROOT.py' ) # ... run 'MNISTtoROOT.py' to make the dataset file.
         os.system( 'python MNISTtoROOT.py' )
 
-        if not isfile( datafilename ):
-            print( '  ' + 'MNISTtoROOT.py failed. Exiting.' )
+        if not isfile( datafilename ): # If dataset file was not created...
+            print( '  ' + 'MNISTtoROOT.py failed. Exiting.' ) # ... exit.
             sys.exit()
 
-    else:
-        print( '  ' + 'MNISTtoROOT.py not found. Exiting.' )
+    else: # If there isn't 'MNISTtoROOT.py' file...
+        print( '  ' + 'MNISTtoROOT.py not found. Exiting.' ) # ... exit.
         sys.exit()
 
 data = TFile.Open(datafilename)
@@ -107,6 +107,7 @@ for i in range( nb_classes ):
     dataloader.AddTree( testtree[i] , '%d' %(i), weight, cut, TMVA.Types.kTesting  ) # Add trees specifying their purpose (Testing)
 
 dataloader.PrepareTrainingAndTestTree(TCut(''),
+                                     # 'validation_split=0.1:'
                                      '!CalcCorrelations:' # Skip calculating decorrelation matrix
                                      'NormMode=None:' # Normalization makes the entry numbers of each class to be equal. It is not our business.
                                      '!V') # No verbose option
@@ -138,10 +139,19 @@ model.save('PyKerasMNIST.h5')
 # Model generating end. Show the built model summary
 model.summary()
 
+# Visualize model as graph
+try:
+    from keras.utils.vis_utils import plot_model
+    plot_model(model, to_file='model.png', show_shapes=True)
+except:
+    print('[INFO] Failed to make model plot')
+
 # Book methods
 factory.BookMethod( dataloader, TMVA.Types.kPyKeras, "PyKerasMNIST",
                     '!H:!V:VarTransform=:'
                     'FilenameModel=PyKerasMNIST.h5:'
+                    'ValidationSize=1:' # I don't want to split my training dataset to validation dataset, but atleast one data must be given to validation dataset.
+                    '!SaveBestOnly:' # Save the last result, not the best one.
                     'NumEpochs=5:' # Train 5 times
                     'BatchSize=128') # Calculate gradient descent using 128 samples
 

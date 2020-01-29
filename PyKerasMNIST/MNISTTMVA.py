@@ -107,7 +107,6 @@ for i in range( nb_classes ):
     dataloader.AddTree( testtree[i] , '%d' %(i), weight, cut, TMVA.Types.kTesting  ) # Add trees specifying their purpose (Testing)
 
 dataloader.PrepareTrainingAndTestTree(TCut(''),
-                                     # 'validation_split=0.1:'
                                      '!CalcCorrelations:' # Skip calculating decorrelation matrix
                                      'NormMode=None:' # Normalization makes the entry numbers of each class to be equal. It is not our business.
                                      '!V') # No verbose option
@@ -142,7 +141,7 @@ model.summary()
 # Visualize model as graph
 try:
     from keras.utils.vis_utils import plot_model
-    plot_model(model, to_file='model.png', show_shapes=True)
+    plot_model(model, to_file='PyKerasMNISTModel.png', show_shapes=True)
 except:
     print('[INFO] Failed to make model plot')
 

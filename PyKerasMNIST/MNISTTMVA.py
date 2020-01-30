@@ -1,13 +1,18 @@
 #########################################################
 ##                                                     ##
-## MNISTTMVA.py                                        ##
+## MNISTtoROOT.py                                      ##
 ## Written by Seungmok Lee                             ##
 ## Seoul Nat'l Univ.                                   ##
 ## Department of Physics and Astronomy                 ##
 ## email: physmlee@gmail.com                           ##
+## git : https://github.com/physmlee/DLStudy           ##
+## Date: 2020.01.26                                    ##
 ##                                                     ##
-## 2020.01.26.                                         ##
-## With Python 2.7.17 and ROOT 6.18/04                 ##
+## Tested Enviornment                                  ##
+##   Python     2.7                                    ##
+##   ROOT       6.18/04                                ##
+##   tensorflow 1.14.0                                 ##
+##   keras      2.3.1                                  ##
 ## In Ubuntu 18.04 LTS                                 ##
 ##                                                     ##
 #########################################################
@@ -20,7 +25,7 @@
 ## file is not found, generates it running             ##
 ## 'MNISTtoROOT.py' macro.                             ##
 ##                                                     ##
-## Run it by typing                                    ##
+## Run this by typing                                  ##
 ##                                                     ##
 ##   >> python MNISTTMVA.py                            ##
 ##                                                     ##
@@ -106,7 +111,7 @@ for i in range( nb_classes ):
     dataloader.AddTree( traintree[i], '%d' %(i), weight, cut, TMVA.Types.kTraining ) # Add trees specifying their purpose (Training) 
     dataloader.AddTree( testtree[i] , '%d' %(i), weight, cut, TMVA.Types.kTesting  ) # Add trees specifying their purpose (Testing)
 
-dataloader.PrepareTrainingAndTestTree(TCut(''),
+dataloader.PrepareTrainingAndTestTree(cut,
                                      '!CalcCorrelations:' # Skip calculating decorrelation matrix
                                      'NormMode=None:' # Normalization makes the entry numbers of each class to be equal. It is not our business.
                                      '!V') # No verbose option
@@ -145,14 +150,14 @@ try:
 except:
     print('[INFO] Failed to make model plot')
 
-# Book methods
-factory.BookMethod( dataloader, TMVA.Types.kPyKeras, "PyKerasMNIST",
-                    '!H:!V:VarTransform=:'
-                    'FilenameModel=PyKerasMNIST.h5:'
-                    'ValidationSize=1:' # I don't want to split my training dataset to validation dataset, but atleast one data must be given to validation dataset.
-                    '!SaveBestOnly:' # Save the last result, not the best one.
-                    'NumEpochs=5:' # Train 5 times
-                    'BatchSize=128') # Calculate gradient descent using 128 samples
+# Book method
+factory.BookMethod(dataloader, TMVA.Types.kPyKeras, "PyKerasMNIST",
+                   '!H:!V:VarTransform=:'
+                   'FilenameModel=PyKerasMNIST.h5:'
+                   'ValidationSize=1:' # I don't want to split my training dataset to validation dataset, but atleast one data must be given to validation dataset.
+                   '!SaveBestOnly:'  # Save the last result, not the best one.
+                   'NumEpochs=5:'  # Train 5 times
+                   'BatchSize=128')  # Calculate gradient descent using 128 samples
 
 # Run TMVA
 factory.TrainAllMethods()

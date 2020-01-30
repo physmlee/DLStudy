@@ -9,10 +9,10 @@
 ## Date: 2020.01.26                                    ##
 ##                                                     ##
 ## Tested Enviornment                                  ##
-##   Python		2.7                                    ##
-##   ROOT		6.18/04                                ##
-##   tensorflow	1.14.0                                 ##
-##   keras		2.3.1                                  ##
+##   Python     2.7                                    ##
+##   ROOT       6.18/04                                ##
+##   tensorflow 1.14.0                                 ##
+##   keras      2.3.1                                  ##
 ## In Ubuntu 18.04 LTS                                 ##
 ##                                                     ##
 #########################################################

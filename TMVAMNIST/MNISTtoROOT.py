@@ -5,20 +5,25 @@
 ## Seoul Nat'l Univ.                                   ##
 ## Department of Physics and Astronomy                 ##
 ## email: physmlee@gmail.com                           ##
+## git : https://github.com/physmlee/DLStudy           ##
+## Date: 2020.01.26                                    ##
 ##                                                     ##
-## 2020.01.26.                                         ##
-## With Python 2.7.17 and ROOT 6.18/04                 ##
+## Tested Enviornment                                  ##
+##   Python		2.7                                    ##
+##   ROOT		6.18/04                                ##
+##   tensorflow	1.14.0                                 ##
+##   keras		2.3.1                                  ##
 ## In Ubuntu 18.04 LTS                                 ##
 ##                                                     ##
 #########################################################
 ##                                                     ##
 ##                   INSTRUCTION                       ##
 ##                                                     ##
-## This macro download MNIST dataset and converts it   ##
+## This macro downloads MNIST dataset and converts it   #
 ## to root file.                                       ##
 ## The output is written at "./data/MNIST.root" file.  ##
 ##                                                     ##
-## Run it by typing                                    ##
+## Run this by typing                                  ##
 ##                                                     ##
 ##   >> python MNIST.py                                ##
 ##                                                     ##

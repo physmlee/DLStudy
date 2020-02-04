@@ -176,7 +176,7 @@ except:
     print('[INFO] Failed to make model plot')
 
 # Book method
-factory.BookMethod(dataloader, TMVA.Types.kPyKeras, "PyKerasMNIST",
+factory.BookMethod(dataloader, TMVA.Types.kPyKeras, "MNIST_PyMVA_CNN",
                    '!H:!V:VarTransform=:'
                    'FilenameModel=MNIST_PyMVA_CNN_Model.h5:'
                    'ValidationSize=1:' # I don't want to split my training dataset to validation dataset, but atleast one data must be given to validation dataset.

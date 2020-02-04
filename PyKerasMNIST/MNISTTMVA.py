@@ -1,6 +1,6 @@
 #########################################################
 ##                                                     ##
-## MNISTtoROOT.py                                      ##
+## MNISTTMVA.py                                        ##
 ## Written by Seungmok Lee                             ##
 ## Seoul Nat'l Univ.                                   ##
 ## Department of Physics and Astronomy                 ##

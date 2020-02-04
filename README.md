@@ -7,5 +7,8 @@ Try applying deep learning to HEP data.
 ### TMVAMNIST
 MNIST Multiclass Classification Implementation with TMVA, ROOT, C++ language
 
-## PyKerasMNIST
+### PyKerasMNIST
 MNIST Multiclass Classification Implementation with PyMVA, PyROOT, Python language
+
+### CNN
+MNIST Multiclass Classification CNN Implementation with kDL and kPyKeras methods in TMVA.

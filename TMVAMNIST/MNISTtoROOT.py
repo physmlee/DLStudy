@@ -25,7 +25,7 @@
 ##                                                     ##
 ## Run this by typing                                  ##
 ##                                                     ##
-##   >> python MNIST.py                                ##
+##   >> python MNISTtoROOT.py                          ##
 ##                                                     ##
 #########################################################
 ##                                                     ##

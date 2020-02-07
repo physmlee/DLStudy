@@ -1,0 +1,43 @@
+<Author>
+Seungmok Lee, from Seoul Nat'l Univ. Department of Physics and Astronomy.
+Written in 2020.01.29.
+
+<Enviornment>
+ I've done it on Ubuntu 18.04LTS 64bit, which is installed in VMware Workstation 15 Player in Windows 10 64bit.
+gcc 7.4.0	cmake 3.10.2.	python 2.7.17	pip 20.0.2	root 6.18.04
+
+<Caution>
+ You should install python2.7, numpy, and then ROOT. When installing (building) ROOT, it detects whether numpy is installed, and then makes link to numpy. So if there is no numpy when installing ROOT, then PyROOT cannot detect numpy, which is a big problem. Also, 
+
+1. Install Python 2.7
+ $ sudo apt-get install python2.7
+
+2. Change python version into 2.7
+https://seongkyun.github.io/others/2019/05/09/ubuntu_python/
+ $ sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+ $ sudo update-alternatives --config python
+
+3. Install pip (pip for python 2.7)
+ $ sudo apt-get install python-pip python-dev
+ $ sudo apt-get upgrade
+ $ sudo pip install --upgrade pip
+
+4. Install other python packages
+ $ sudo apt-get install libblas-dev liblapack-dev gfortran libpng-dev libfreetype6-dev libjpeg8-dev
+ $ sudo pip install numpy scipy matplotlib scikit-learn tqdm pydot
+
+5. Install tensorflow
+https://tensorflow.blog/category/tensorflow/
+According to TMVA developers, tensorflow version >= 1.15.0 is compatible to TMVA. But there are some compatibility issue with tensorflow 2. So I recommend you to use this old version.
+ $ sudo pip install setuptools --upgrade
+ $ pip install --upgrade tensorflow==1.15.0
+
+6. Install Keras
+ $ pip install --upgrade keras==2.3.1
+
+7. Install ROOT
+When installing (building) ROOT, please be careful not to link it to wrong version of python, numpy, or other packages. As default, (if you installed the packages above with correct versions) it will be linked correctly.
+
+8. Test
+There are python TMVA example codes in '/path-to-root/tutorials/tmva/keras/'. You can run those files in that folder, but there can be some permission issue. I recommend you to run them after copying them to other directory.
+

@@ -12,3 +12,6 @@ MNIST Multiclass Classification Implementation with PyMVA, PyROOT, Python langua
 
 ### CNN
 MNIST Multiclass Classification CNN Implementation with kDL and kPyKeras methods in TMVA.
+
+### uprootMNIST
+MNIST Multiclass Classification using uproot package to read root file in the pure python environment

@@ -16,6 +16,8 @@ start = 0
 startfortest = 0
 startfortrain = 0
 with h5py.File(filename,'w') as f:		
+# In Python, we usually treat file thru 'with'.
+# Outside the with block, the file becomes automatically closed.
 
 	d_X_train = f.create_dataset('X_train', (160000,112*88), dtype='float32',compression='gzip',compression_opts=9)
 	d_X_test = f.create_dataset('X_test', (40000,112*88), dtype='float32',compression='gzip',compression_opts=9)
